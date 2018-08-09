@@ -57,7 +57,7 @@ export class HomeComponent implements OnInit {
   // Getting messages of a channel
   getMessages() {
     this.requestService.getMessages(this.serviceId, this.channelId).subscribe(response => {
-
+        // Need More Time
     });
   }
 
