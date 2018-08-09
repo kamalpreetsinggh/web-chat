@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
     // Setting the name of  to local storage
     this.socialAuthService.signIn(socialPlatformProvider).then(
       (userData) => {
-        localStorage.setItem("userName",userData.name);
+        localStorage.setItem('userName', userData.name);
       }
     );
     this.router.navigate(['home']);
