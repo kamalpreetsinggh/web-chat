@@ -1,0 +1,63 @@
+#leftPanel {
+  background-color: #4D394B;
+  position: absolute;
+  height: 100%;
+  color: rgb(187, 155, 185);
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  font-size: 16px;
+  padding: 0;
+  width: 220px;
+}
+
+#leftPanel h2 {
+  margin: 20px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+#channels {
+  top: 13%;
+  position: realtive;
+}
+
+#rightPanel {
+  display: inline-block;
+  left: 220px;
+  position: absolute;
+  height: 100%;
+}
+
+#channels a {
+  cursor: pointer;
+}
+
+.channelFields {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  padding: 8px 15px;
+  color: rgb(187, 155, 185)
+}
+
+.channelFields i {
+  position: absolute;
+  left: 150px;
+  cursor: pointer;
+}
+
+#message{
+  padding: 5px;
+  border: 1px solid black;
+  width: 800px;
+  left: 20%;
+  top: 90%;
+  position: relative;
+}
+
+#sendButton{
+  width: 80px;
+  padding: 5px;
+  top: 90%;
+  left: 21%;
+  position: relative;
+
+}

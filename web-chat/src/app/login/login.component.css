@@ -1,0 +1,13 @@
+header{
+  text-align: center;
+  font-family: Calibri, serif;
+  background-color: #4D394B;
+  height: 15%;
+  color: white;
+
+}
+button{
+  top: 40%;
+  left: 45%;
+  position: absolute;
+}

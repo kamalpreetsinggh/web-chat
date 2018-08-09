@@ -1,0 +1,25 @@
+<div id="leftPanel">
+  <div></div>
+  <div>
+    <h2>Channels
+      <i (click)="changeFlag()" class="fas fa-plus-circle"></i>
+    </h2>
+  </div>
+  <div *ngIf="flag" id="createChannel">
+    <input type="text" [(ngModel)]="channelName" placeholder="Create Channel" />
+    <button type="button" (click)="createChannel()">Create</button>
+  </div>
+  <div id="channels" *ngFor="let channel of channels">
+    <div class="channelFields">#
+      <a id="{{channel}}" (click)="selectChannel(channel)">{{ channel }}</a>
+      <i (click)="selectChannel(channel)" class="fas fa-plus-circle"></i>
+    </div>
+  </div>
+</div>
+<div id="rightPanel">
+  <div id="messages">
+    
+  </div>
+  <input id="message" [(ngModel)]="message" type="text" placeholder="Type Here" key.enter="sendMessage()" />
+  <button id="sendButton" type="button" value="send" (click)="sendMessage()">Send</button>
+</div>
