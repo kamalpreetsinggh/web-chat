@@ -3,10 +3,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SocialLoginModule, AuthServiceConfig, GoogleLoginProvider } from 'angular-6-social-login';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule} from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { AuthGaurdService } from './auth-gaurd.service';
 
 // Configuration for login from google account
 export function getAuthServiceConfigs() {
@@ -21,26 +23,32 @@ export function getAuthServiceConfigs() {
   return config;
 }
 
+// Define Routes for the application
 const routes: Routes = [{
   path: '',
   component: LoginComponent
 }, {
   path: 'home',
-  component: HomeComponent
+  component: HomeComponent,
+  canActivate: [AuthGaurdService]
+}, {
+  path: '**',
+  component: PageNotFoundComponent
 }];
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
     SocialLoginModule,
     HttpClientModule,
     FormsModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })
   ],
   providers: [{
     provide: AuthServiceConfig,

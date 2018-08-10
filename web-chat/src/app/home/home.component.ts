@@ -7,21 +7,20 @@ import { RequestService } from '../request.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  userName: string = localStorage.getItem("userName");
-  private serviceId = 'IS41ef51643c3e4776a917e7eabf70a44a';
-  flag = false;
+  name: string = localStorage.getItem('name');
+  serviceId = 'ISe888de86dac94f7fb12c0c25e7028c14';
+  flag = true;
   channelName: string;
   channelId: string;
   channels: any = [];
+  searchResult = [];
+  searchChannel = false;
+  generalChannel;
   message: string;
-  messages = [];
-  constructor(private requestService: RequestService) {
-  }
+  messages: any = [];
+  constructor(private requestService: RequestService) {}
 
   ngOnInit() {
-    // this.requestService.createService().subscribe(Response => {
-    //   this.serviceId = Response.sid;
-    // });
     // Retrieving previously created channels and adding their names in an array
     this.requestService.retrieveChannels(this.serviceId).subscribe(response => {
       response.channels.map(key => {
@@ -35,20 +34,27 @@ export class HomeComponent implements OnInit {
     this.requestService.createChannel(this.channelName, this.serviceId).subscribe();
   }
 
-  // Changing flag to create or remove text field on click for creating channels
-  changeFlag() {
-    this.flag = !this.flag;
+  // Changing flag to create or remove text field to switch between creating and searching channels
+  changeFlag(boolean) {
+    this.flag = boolean;
   }
 
   // Getting channel name and then retrieving channel by channel name and then getting channel id
   selectChannel(channelName) {
     this.requestService.retrieveChannelByName(this.serviceId, document.getElementById(channelName).innerHTML)
-      .subscribe(response => this.requestService.addUserToChannel(this.serviceId, response.sid, this.userName).subscribe(res => {
+      .subscribe(response => this.requestService.addUserToChannel(this.serviceId, response.sid, this.name).subscribe(res => {
         this.channelId = response.sid;
       }));
   }
 
-  // Sending messsages and also getting messages to display
+  getGeneralChannelByName() {
+    this.requestService.retrieveChannelByName(this.serviceId, 'general')
+      .subscribe(response => this.requestService.addUserToChannel(this.serviceId, response.sid, this.name).subscribe(res => {
+        this.channelId = response.sid;
+      }));
+  }
+
+  // Sending messages and also getting messages to display
   sendMessage() {
     this.requestService.sendMessage(this.serviceId, this.channelId, this.message).subscribe();
     this.getMessages();
@@ -56,11 +62,28 @@ export class HomeComponent implements OnInit {
 
   // Getting messages of a channel
   getMessages() {
+    this.messages = [];
     this.requestService.getMessages(this.serviceId, this.channelId).subscribe(response => {
-        // Need More Time
+      response.messages.map(key => {
+        this.messages.push(key.body);
+      });
     });
   }
 
+  search() {
+    this.requestService.retrieveChannels(this.serviceId).subscribe(response => {
+      response.channels.map(key => {
+        if (this.channelName === key.unique_name) {
+          this.searchResult.push(key.unique_name);
+        }
+      });
+    });
+    // this.searchChannel = false;
+    this.searchResult = [];
+  }
+  clearMsg(){
+    this.messages=[];
+  }
 }
 
 

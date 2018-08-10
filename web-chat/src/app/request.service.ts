@@ -14,16 +14,6 @@ export class RequestService {
     })
   };
 
-  // // To set the name of user from gmail account
-  // setUserName(userName: string){
-  //   this.userName=userName;
-  // }
-
-  // // To get the name of user from gmail account;
-  // getUserName(){
-
-  // }
-
   // To create service in web chat
   createService(): Observable<any> {
     return this.http.post<any>('https://chat.twilio.com/v2/Services', 'FriendlyName=GroupChat', this.httpOptions);
@@ -47,16 +37,23 @@ export class RequestService {
 
   // To add users to channels
   addUserToChannel(serviceId: string, channelId: string, userName: string): Observable<any> {
-    return this.http.post<any>('https://chat.twilio.com/v2/Services/' + serviceId + '/Channels/' + channelId + '/Members', 'Identity=' + userName, this.httpOptions);
+    return this.http.post<any>('https://chat.twilio.com/v2/Services/' + serviceId + '/Channels/' + channelId + '/Members',
+      'Identity=' + userName, this.httpOptions);
   }
 
-  // To send messages accross channels
+  // To send messages across channels
   sendMessage(serviceId: string, channelId: string, message: string): Observable<any> {
-    return this.http.post<any>('https://chat.twilio.com/v2/Services/' + serviceId + '/Channels/' + channelId + '/Messages', 'Body=' + message, this.httpOptions);
+    return this.http.post<any>('https://chat.twilio.com/v2/Services/' + serviceId + '/Channels/' + channelId + '/Messages',
+      'Body=' + message, this.httpOptions);
   }
 
   // To get the chat messages of any channel
   getMessages(serviceId: string, channelId: string): Observable<any> {
     return this.http.get('https://chat.twilio.com/v2/Services/' + serviceId + '/Channels/' + channelId + '/Messages', this.httpOptions);
   }
+
+  // To send images in chat
+  // sendImage(serviceId: string, channelId: string): Observable<any>{
+  //   return this.http.post<any>('https://chat.twilio.com/v2/Services/' + serviceId + '/Channels/' + channelId + '/Messages','Media=',this.httpOptions);
+  // }
 }
