@@ -25,3 +25,7 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+--------------------------------------------------------------------------------------------------------------------------------
+Created basic chattinng app in which we can chat in channels. Twilio Api are used for the backend and angular is used for the frontend.
+We can create channels and add members in those groups and then chat with the group members. All the groups are public.
+You can also search the previously created groups.
