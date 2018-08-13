@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class RequestService {
+export class APIIntegrationService {
   userName: string;
   constructor(private http: HttpClient) { }
   httpOptions = {
@@ -19,8 +19,8 @@ export class RequestService {
     return this.http.post<any>('https://chat.twilio.com/v2/Services', 'FriendlyName=GroupChat', this.httpOptions);
   }
 
-  // To create channel in web chat
-  createChannel(channelName: string, serviceId): Observable<any> {
+  // To create a channel in web chat
+  createChannel(serviceId: string, channelName: string): Observable<any> {
     return this.http.post<any>('https://chat.twilio.com/v2/Services/' + serviceId + '/Channels',
       'UniqueName=' + channelName, this.httpOptions);
   }
@@ -36,14 +36,18 @@ export class RequestService {
   }
 
   // To add users to channels
-  addUserToChannel(serviceId: string, channelId: string, userName: string): Observable<any> {
-    return this.http.post<any>('https://chat.twilio.com/v2/Services/' + serviceId + '/Channels/' + channelId + '/Members',
+  addUserToChannel(serviceId: string, channelName: string, userName: string): Observable<any> {
+    return this.http.post<any>('https://chat.twilio.com/v2/Services/' + serviceId + '/Channels/' + channelName + '/Members',
       'Identity=' + userName, this.httpOptions);
   }
 
+  getUserChannels(serviceId: string, userName: string): Observable<any> {
+    return this.http.get('https://chat.twilio.com/v2/Services/' + serviceId + '/Users/' + userName + '/Channels',this.httpOptions);
+  }
+
   // To send messages across channels
-  sendMessage(serviceId: string, channelId: string, message: string): Observable<any> {
-    return this.http.post<any>('https://chat.twilio.com/v2/Services/' + serviceId + '/Channels/' + channelId + '/Messages',
+  sendMessage(serviceId: string, channelName: string, message: string, userName: string): Observable<any> {
+    return this.http.post<any>('https://chat.twilio.com/v2/Services/' + serviceId + '/Channels/' + channelName + '/Messages',
       'Body=' + message, this.httpOptions);
   }
 
@@ -52,8 +56,4 @@ export class RequestService {
     return this.http.get('https://chat.twilio.com/v2/Services/' + serviceId + '/Channels/' + channelId + '/Messages', this.httpOptions);
   }
 
-  // To send images in chat
-  // sendImage(serviceId: string, channelId: string): Observable<any>{
-  //   return this.http.post<any>('https://chat.twilio.com/v2/Services/' + serviceId + '/Channels/' + channelId + '/Messages','Media=',this.httpOptions);
-  // }
 }

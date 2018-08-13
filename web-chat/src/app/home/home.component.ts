@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { RequestService } from '../request.service';
+import { APIIntegrationService } from '../APIIntegration.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -7,85 +8,98 @@ import { RequestService } from '../request.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  name: string = localStorage.getItem('name');
-  serviceId = 'ISe888de86dac94f7fb12c0c25e7028c14';
-  flag = true;
+  name: string;
+  serviceId = 'ISf3a46c022cdf46d89aefee43fd14bacc';
+  flag = false;
   channelName: string;
-  channelId: string;
+  searchChannelName: string;
   channels: any = [];
-  searchResult = [];
-  searchChannel = false;
-  generalChannel;
+  searchedChannels = [];
+  joinedChannels = [];
+  channelId: string;
+  channel:any
   message: string;
   messages: any = [];
-  constructor(private requestService: RequestService) {}
+  constructor(private apiIntegrationService: APIIntegrationService, private router: Router) {
+    this.name = localStorage.getItem('name');
+  }
 
+  // displaying joined channels
   ngOnInit() {
-    // Retrieving previously created channels and adding their names in an array
-    this.requestService.retrieveChannels(this.serviceId).subscribe(response => {
-      response.channels.map(key => {
-        this.channels.push(key.unique_name);
-      });
-    });
+    this.apiIntegrationService.createChannel(this.serviceId, "general").subscribe()
+    this.apiIntegrationService.addUserToChannel(this.serviceId, "general", this.name).subscribe();
+    this.getJoinedUserChannels();
   }
 
   // Method to create channels
   createChannel() {
-    this.requestService.createChannel(this.channelName, this.serviceId).subscribe();
+    if (this.channelName != undefined) {
+      this.apiIntegrationService.createChannel(this.serviceId, this.channelName).subscribe();
+    }
+    else alert("Please Enter a valid channel name!");
   }
 
-  // Changing flag to create or remove text field to switch between creating and searching channels
-  changeFlag(boolean) {
-    this.flag = boolean;
+  // Method to search created channels
+  search() {
+    this.searchedChannels = [];
+    this.apiIntegrationService.retrieveChannels(this.serviceId).subscribe(response => {
+      response.channels.map(key => {
+        if (this.searchChannelName === key.unique_name) {
+          this.searchedChannels.push(key.unique_name);
+        }
+      });
+    });
   }
 
-  // Getting channel name and then retrieving channel by channel name and then getting channel id
-  selectChannel(channelName) {
-    this.requestService.retrieveChannelByName(this.serviceId, document.getElementById(channelName).innerHTML)
-      .subscribe(response => this.requestService.addUserToChannel(this.serviceId, response.sid, this.name).subscribe(res => {
-        this.channelId = response.sid;
-      }));
+  // Changing flag to create or remove text field for creating channels
+  changeFlag() {
+    this.flag = !this.flag;
   }
 
-  getGeneralChannelByName() {
-    this.requestService.retrieveChannelByName(this.serviceId, 'general')
-      .subscribe(response => this.requestService.addUserToChannel(this.serviceId, response.sid, this.name).subscribe(res => {
-        this.channelId = response.sid;
-      }));
+  // Joining users to channel
+  joinChannel(channelName) {
+    this.apiIntegrationService.addUserToChannel(this.serviceId, document.getElementById(channelName).innerHTML, this.name).subscribe(res => { console.log(res) })
+  }
+
+  // Finding joined channels and pushing into an array
+  getJoinedUserChannels() {
+    this.joinedChannels = [];
+    this.apiIntegrationService.retrieveChannels(this.serviceId).subscribe(response => {
+      response.channels.map(key1 => {
+        this.channels.push(key1.unique_name);
+        this.apiIntegrationService.getUserChannels(this.serviceId, this.name).subscribe(res => {
+          res.channels.map(key2 => {
+            if (key2.channel_sid === key1.sid) {
+              this.joinedChannels.push(key1.unique_name);
+            }
+          })
+        })
+      })
+    })
   }
 
   // Sending messages and also getting messages to display
   sendMessage() {
-    this.requestService.sendMessage(this.serviceId, this.channelId, this.message).subscribe();
-    this.getMessages();
+    this.apiIntegrationService.sendMessage(this.serviceId, document.getElementById("channelName").innerHTML, this.message, this.name).subscribe();
+    this.getMessages(document.getElementById("channelName").innerHTML);
   }
 
   // Getting messages of a channel
-  getMessages() {
-    this.messages = [];
-    this.requestService.getMessages(this.serviceId, this.channelId).subscribe(response => {
-      response.messages.map(key => {
-        this.messages.push(key.body);
-      });
+  getMessages(channelName) {
+    this.channel=channelName
+    // console.log(this.channel)
+    // this.messages = [];
+    this.apiIntegrationService.getMessages(this.serviceId, channelName).subscribe(response => {
+     this.messages= response.messages
+      
     });
   }
 
-  search() {
-    this.requestService.retrieveChannels(this.serviceId).subscribe(response => {
-      response.channels.map(key => {
-        if (this.channelName === key.unique_name) {
-          this.searchResult.push(key.unique_name);
-        }
-      });
-    });
-    // this.searchChannel = false;
-    this.searchResult = [];
-  }
-  clearMsg(){
-    this.messages=[];
+  //Signout from the app
+  signout() {
+    localStorage.clear();
+    this.router.navigate(['/']);
   }
 }
-
-
 
 

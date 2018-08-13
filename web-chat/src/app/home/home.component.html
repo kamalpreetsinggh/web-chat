@@ -1,31 +1,44 @@
 <div id="leftPanel">
   <div id="name">{{name}}</div>
-  <div>
-    <h2>Channels
-      <i (click)="changeFlag(true)" class="fas fa-plus-circle"></i>
-      <i (click)="changeFlag(false)" class="fas fa-search"></i>
-    </h2>
-  </div>
-  <div *ngIf="!flag" id="searchChannel">
-    <input type="text" id="search" name="channelName1" placeholder="Search Here" [(ngModel)]="channelName" />
+  <div id="searchChannel">
+    <input type="text" id="search" name="searchChannelName" placeholder="Search Here" [(ngModel)]="searchChannelName" />
     <button type="button" (click)="search()">Search</button>
   </div>
+  <div id="searchedChannels">
+    <div class="channelFields" *ngFor="let channel of searchedChannels">
+      <span>#</span>
+      <div id="joinChannel">
+        <a id="{{channel}}" (click)="joinChannel(channel)">{{ channel }}</a>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div id="channelHeading">
+      <h2>Channels</h2>
+    </div>
+    <div id="channelIcon">
+      <i (click)="changeFlag()" class="fas fa-plus-circle"></i>
+    </div>
+  </div>
   <div *ngIf="flag" id="createChannel">
-    <input type="text" name="channelName" [(ngModel)]="channelName" placeholder="Create Channel" />
+    <input type="text" name="createChannelName" [(ngModel)]="channelName" placeholder="Create Channel" />
     <button type="button" (click)="createChannel()">Create</button>
   </div>
-  <div id="channels" >
-    <div class="channelFields" *ngFor="let result of searchResult">#
-      <a id="{{result}}" (click)="getMessages(result)">{{ result }}</a><i (click)="selectChannel(result)" class="fas fa-plus-circle"></i>
+  <div id="joinedChannels">
+    <div class="channelFields" *ngFor="let joinedChannel of joinedChannels">
+      <span>#</span>
+      <div id="displayJoinChannels">
+        <a id="{{joinedChannel}}" (click)="getMessages(joinedChannel)">{{ joinedChannel }}</a>
+      </div>
     </div>
   </div>
 </div>
 <div id="rightPanel">
-  <h1></h1>
+  <h1 id="channelName">{{channel}}</h1>
   <div id="innerRightPanel">
     <div id="messages" *ngFor="let message of messages">
-      <div id="chat">
-        <b>{{name}}:</b> {{message}}
+      <div id="message">
+        <b>{{name}}:</b> {{message.body}}
       </div>
     </div>
   </div>

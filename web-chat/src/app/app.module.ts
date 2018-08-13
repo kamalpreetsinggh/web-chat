@@ -36,6 +36,7 @@ const routes: Routes = [{
   component: PageNotFoundComponent
 }];
 
+// @ts-ignore
 @NgModule({
   declarations: [
     AppComponent,

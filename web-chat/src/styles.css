@@ -1,9 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
-body{
+
+body {
   margin: 0;
   padding: 0;
-  background: url('./app/images/2.jpg') no-repeat fixed;
-  background-size: cover;
   max-width: 100%;
   overflow-x: hidden;
+  background: url('/src/app/images/2.jpg') no-repeat fixed;
+  background-size: cover;
 }
