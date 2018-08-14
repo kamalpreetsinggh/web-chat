@@ -60,6 +60,7 @@ export class HomeComponent implements OnInit {
   // Joining users to channel
   joinChannel(channelName) {
     this.apiIntegrationService.addUserToChannel(this.serviceId, document.getElementById(channelName).innerHTML, this.name).subscribe(res => { console.log(res) })
+    this.joinedChannels.push(channelName)
   }
 
   // Finding joined channels and pushing into an array

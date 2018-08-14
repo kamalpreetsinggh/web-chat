@@ -110,8 +110,9 @@
   overflow: auto;
   margin-left: 20px;
   height: 80%;
-  width: 84%;
+  width: 95%;
   position: absolute;
+  overflow-x: hidden;
 }
 
 #channels a {
@@ -192,4 +193,7 @@
   margin-left: 200px;
   padding: 10px;
   font-family: Calibri, serif;
+}
+#message{
+  margin-right: 20px;
 }
