@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
   name: string;
-  serviceId = 'IS15360efb590d4d7b92462b0c4ea72e3b';
+  serviceId = 'IS7e2d4ff6b7cd4339897824e1f35534cf';
   flag = false;
   channelName: string;
   searchChannelName: string;
