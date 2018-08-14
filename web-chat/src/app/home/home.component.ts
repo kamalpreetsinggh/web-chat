@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit {
   channel:any
   message: string;
   messages: any = [];
+  loading = false;
   constructor(private apiIntegrationService: APIIntegrationService, private router: Router) {
     this.name = localStorage.getItem('name');
   }

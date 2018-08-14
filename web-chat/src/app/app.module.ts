@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { LoadingModule } from 'ngx-loading';
+
 import { AuthGaurdService } from './auth-gaurd.service';
 
 // Configuration for login from google account
@@ -49,6 +51,7 @@ const routes: Routes = [{
     SocialLoginModule,
     HttpClientModule,
     FormsModule,
+    LoadingModule,
     RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })
   ],
   providers: [{

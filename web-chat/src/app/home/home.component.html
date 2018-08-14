@@ -39,9 +39,9 @@
 <div id="rightPanel">
   <h1 id="channelName">{{channel}}</h1>
   <div id="innerRightPanel">
-    <div id="messages" *ngFor="let message of messages" [ngStyle]='{"float": message.from == name ? "right": "left"}'>
+    <div id="messages" *ngFor="let message of messages" [ngClass]='{"sender":(message.from == name),"receiver":(message.from != name)}'>
       <div id="message">
-        <b>{{message.from}}:</b> {{message.body}}
+        <b>{{message.from}}: &nbsp; </b> {{message.body}}
         <span id="time">{{message.date_created | date:'h:mm aaa'}} </span>
       </div>
     </div>
