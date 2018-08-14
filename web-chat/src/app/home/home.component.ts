@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
   name: string;
-  serviceId = 'ISf3a46c022cdf46d89aefee43fd14bacc';
+  serviceId = 'IS15360efb590d4d7b92462b0c4ea72e3b';
   flag = false;
   channelName: string;
   searchChannelName: string;
@@ -29,6 +29,11 @@ export class HomeComponent implements OnInit {
     this.apiIntegrationService.createChannel(this.serviceId, "general").subscribe()
     this.apiIntegrationService.addUserToChannel(this.serviceId, "general", this.name).subscribe();
     this.getJoinedUserChannels();
+    if (document.getElementById("channelName")) {
+      setInterval(() => {
+        this.getMessages(document.getElementById("channelName").innerHTML);
+      }, 1000)
+    }
   }
 
   // Method to create channels
@@ -78,7 +83,7 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  // Sending messages and also getting messages to display
+  // Sending messages and showing messages
   sendMessage() {
     this.apiIntegrationService.sendMessage(this.serviceId, document.getElementById("channelName").innerHTML, this.message, this.name).subscribe();
     this.getMessages(document.getElementById("channelName").innerHTML);
@@ -91,7 +96,6 @@ export class HomeComponent implements OnInit {
     // this.messages = [];
     this.apiIntegrationService.getMessages(this.serviceId, channelName).subscribe(response => {
      this.messages= response.messages
-      
     });
   }
 

@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
 export class APIIntegrationService {
   userName: string;
+
   constructor(private http: HttpClient) { }
   httpOptions = {
     headers: new HttpHeaders({
@@ -41,14 +42,16 @@ export class APIIntegrationService {
       'Identity=' + userName, this.httpOptions);
   }
 
+  // To get channels of an user
   getUserChannels(serviceId: string, userName: string): Observable<any> {
-    return this.http.get('https://chat.twilio.com/v2/Services/' + serviceId + '/Users/' + userName + '/Channels',this.httpOptions);
+    return this.http.get('https://chat.twilio.com/v2/Services/' + serviceId + '/Users/' + userName + '/Channels', this.httpOptions);
   }
 
   // To send messages across channels
   sendMessage(serviceId: string, channelName: string, message: string, userName: string): Observable<any> {
+    var body = new HttpParams().set('Unique Name', channelName).set('ServiceSid', serviceId).set('Body', message).set('From', userName)
     return this.http.post<any>('https://chat.twilio.com/v2/Services/' + serviceId + '/Channels/' + channelName + '/Messages',
-      'Body=' + message, this.httpOptions);
+      body.toString(), this.httpOptions);
   }
 
   // To get the chat messages of any channel

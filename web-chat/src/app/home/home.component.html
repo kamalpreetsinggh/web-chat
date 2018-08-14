@@ -1,5 +1,8 @@
 <div id="leftPanel">
   <div id="name">{{name}}</div>
+  <div id="signout">
+      <i class="fas fa-arrow-alt-circle-right" (click)="signout()"></i>
+  </div>
   <div id="searchChannel">
     <input type="text" id="search" name="searchChannelName" placeholder="Search Here" [(ngModel)]="searchChannelName" />
     <button type="button" (click)="search()">Search</button>
@@ -27,7 +30,7 @@
   <div id="joinedChannels">
     <div class="channelFields" *ngFor="let joinedChannel of joinedChannels">
       <span>#</span>
-      <div id="displayJoinChannels">
+      <div id="displayJoinChannels" (click)="getMessages(joinedChannel)">
         <a id="{{joinedChannel}}" (click)="getMessages(joinedChannel)">{{ joinedChannel }}</a>
       </div>
     </div>
@@ -36,14 +39,15 @@
 <div id="rightPanel">
   <h1 id="channelName">{{channel}}</h1>
   <div id="innerRightPanel">
-    <div id="messages" *ngFor="let message of messages">
+    <div id="messages" *ngFor="let message of messages" [ngStyle]='{"float": message.from == username ? "right": "left"}'>
       <div id="message">
-        <b>{{name}}:</b> {{message.body}}
+        <b>{{message.from}}:</b> {{message.body}}
+        <span id="time">{{message.date_created | date:'h:mm aaa'}} </span>
       </div>
     </div>
   </div>
   <div>
-    <input id="messageBox" [(ngModel)]="message" type="text" placeholder="Type Here" key.enter="sendMessage()" />
+    <input id="messageBox" [(ngModel)]="message" type="text" placeholder="Type Here" (keyup.enter)="sendMessage()" />
     <button id="sendButton" type="button" value="send" (click)="sendMessage()">Send</button>
   </div>
 </div>
