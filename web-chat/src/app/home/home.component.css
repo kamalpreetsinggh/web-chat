@@ -108,7 +108,7 @@
 
 #innerRightPanel {
   overflow: auto;
-  ;
+  margin-left: 20px;
   height: 80%;
   width: 84%;
   position: absolute;
@@ -181,10 +181,13 @@
   position: relative;
   left: 2%;
   margin: 2px 2px 8px 2px;
-  margin-right: 30px;
   width: 65%;
 }
 
+#time{
+  float: right;
+  margin-right: 10px;
+}
 #chat {
   margin-left: 200px;
   padding: 10px;

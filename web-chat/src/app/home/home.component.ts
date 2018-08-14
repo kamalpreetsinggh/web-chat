@@ -29,17 +29,13 @@ export class HomeComponent implements OnInit {
     this.apiIntegrationService.createChannel(this.serviceId, "general").subscribe()
     this.apiIntegrationService.addUserToChannel(this.serviceId, "general", this.name).subscribe();
     this.getJoinedUserChannels();
-    if (document.getElementById("channelName")) {
-      setInterval(() => {
-        this.getMessages(document.getElementById("channelName").innerHTML);
-      }, 1000)
-    }
   }
 
   // Method to create channels
   createChannel() {
     if (this.channelName != undefined) {
       this.apiIntegrationService.createChannel(this.serviceId, this.channelName).subscribe();
+      this.channelName='';
     }
     else alert("Please Enter a valid channel name!");
   }
@@ -86,17 +82,19 @@ export class HomeComponent implements OnInit {
   // Sending messages and showing messages
   sendMessage() {
     this.apiIntegrationService.sendMessage(this.serviceId, document.getElementById("channelName").innerHTML, this.message, this.name).subscribe();
-    this.getMessages(document.getElementById("channelName").innerHTML);
+    this.message='';
+      setInterval(() => {
+        this.getMessages(document.getElementById("channelName").innerHTML);
+      }, 500)
   }
 
   // Getting messages of a channel
   getMessages(channelName) {
-    this.channel=channelName
-    // console.log(this.channel)
-    // this.messages = [];
+    this.channel=channelName;
     this.apiIntegrationService.getMessages(this.serviceId, channelName).subscribe(response => {
      this.messages= response.messages
     });
+    
   }
 
   //Signout from the app
